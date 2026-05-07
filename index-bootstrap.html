@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÉDICO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0d6efd;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-agregar {
+            margin-bottom: 20px;
+            float: right;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        table {
+            font-size: 14px;
+        }
+        th {
+            background-color: #0d6efd;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+        }
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .totales-row {
+            margin-top: 20px;
+            border-top: 2px solid #dee2e6;
+            padding-top: 15px;
+        }
+        .totales-row table {
+            width: auto;
+            margin: 0 auto;
+        }
+        .totales-row td {
+            padding: 8px 20px;
+            text-align: left;
+        }
+        .totales-row .label {
+            font-weight: bold;
+            background-color: #e9ecef;
+        }
+        .totales-row .value {
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app-bootstrap">
+    <h1>MÉDICO</h1>
+
+    <div class="clearfix">
+        <button class="btn btn-primary btn-agregar" id="body_btnAgregarPaciente">Agregar Paciente</button>
+    </div>
+
+    <!-- Tabla de pacientes -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>nombre</th>
+                    <th>apellido</th>
+                    <th>cedula</th>
+                    <th>sexo</th>
+                    <th>fecha nac</th>
+                    <th>edad</th>
+                    <th>tipo atencion</th>
+                    <th>costo</th>
+                    <th>descuento</th>
+                    <th>pago</th>
+                </tr>
+            </thead>
+            <tbody id="clinica_tbodyLista">
+                <tr><td colspan="11" class="text-center">No hay pacientes registrados</td\(em
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Resultados debajo de sus columnas (usando los mismos ids que la vista espera) -->
+    <div class="totales-row">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <td class="label">PROMEDIO EDAD</td>
+                        <td class="label">TOTAL RECAUDADO</td>
+                    </tr>
+                    <tr>
+                        <td class="value"><span id="clinica_lblPromedioEdad">0.00</span></td>
+                        <td class="value"><span id="clinica_lblTotalRecaudado">0.00</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <td class="label">PORCENTAJE PROCEDIMIENTO</td>
+                        <td class="label">PORCENTAJE CONSULTA</td>
+                        <td class="label">PORCENTAJE CONTROL</td>
+                    </tr>
+                    <tr>
+                        <td class="value"><span id="clinica_lblPorcentajeProcedimiento">0.00%</span></td>
+                        <td class="value"><span id="clinica_lblPorcentajeConsulta">0.00%</span></td>
+                        <td class="value"><span id="clinica_lblPorcentajeControl">0.00%</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <td class="label">PORCENTAJE CON DESCUENTO</td>
+                        <td class="label">PORCENTAJE SIN DESCUENTO</td>
+                    </tr>
+                    <tr>
+                        <td class="value"><span id="clinica_lblPorcentajeConDescuento">0.00%</span></td>
+                        <td class="value"><span id="clinica_lblPorcentajeSinDescuento">0.00%</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <td class="label">TOTAL DESCUENTOS</td>
+                        <td class="label">TOTAL PACIENTES</td>
+                    </tr>
+                    <tr>
+                        <td class="value">$<span id="clinica_lblTotalDescuentos">0.00</span></td>
+                        <td class="value"><span id="clinica_lblTotalPacientes">0</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="pacienteModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Registrar Paciente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="paciente_inNombre">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="paciente_inApellido">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Cedula</label>
+                    <input type="text" class="form-control" id="paciente_inCedula">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sexo</label>
+                    <select class="form-select" id="paciente_inSexo">
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fecha Nacimiento</label>
+                    <input type="date" class="form-control" id="paciente_inFechaNacimiento">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tipo Atencion</label>
+                    <select class="form-select" id="paciente_inTipoAtencion">
+                        <option value="1">Procedimiento ($30)</option>
+                        <option value="2">Consulta ($10)</option>
+                        <option value="3">Control ($0)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="paciente_btCancelar" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="paciente_btAceptar">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module">
+    import Cl_cClinica from "./dist/controllers/Cl_cClinica.js";
+    import Cl_vClinicaBootstrap from "./dist/views/Cl_vClinicaBootstrap.js";
+    import Cl_vPacienteBootstrap from "./dist/views/Cl_vPacienteBootstrap.js";
+
+    const vistaPrincipal = new Cl_vClinicaBootstrap();
+    const vistaFormulario = new Cl_vPacienteBootstrap();
+    const controlador = new Cl_cClinica(vistaPrincipal, vistaFormulario);
+
+    const modalElement = document.getElementById("pacienteModal");
+    if (modalElement) {
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            vistaFormulario.limpiar();
+        });
+    }
+</script>
+
+</body>
+</html>
